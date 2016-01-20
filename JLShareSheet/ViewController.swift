@@ -13,6 +13,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        let view = JLShareSheet(frame: CGRect(x: 16, y: 100, width: 100, height: 100))
+        self.view.addSubview(view)
+        
     }
 
     override func didReceiveMemoryWarning() {
