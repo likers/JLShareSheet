@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 
 
+let deviceWidth = UIScreen.mainScreen().bounds.width
+let deviceHeight = UIScreen.mainScreen().bounds.height
+let scaleNum = deviceWidth/320
+let device = UIDevice.currentDevice().model
+
 class JLShareSheet: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,6 +35,60 @@ protocol ShareActionDelegate {
 class ShareActions: NSObject {
     
     var delegate: ShareActionDelegate?
+    private var superViewController: UIViewController
+    private var superView: UIView
+    
+    let shadowView = UIView()
+    let shadowViewBot = UIView()
+    
+    init(controller: UIViewController, view: UIView) {
+        self.superViewController = controller
+        self.superView = view
+    }
+    
+    func buildShareSheet() {
+        initShadowView()
+        self.superViewController.view.addSubview(shadowView)
+        self.superViewController.view.addSubview(shadowViewBot)
+        
+        shadowView.translatesAutoresizingMaskIntoConstraints = false
+        shadowView.topAnchor.constraintEqualToAnchor(superView.topAnchor, constant: 0).active = true
+        shadowView.leftAnchor.constraintEqualToAnchor(superView.leftAnchor, constant: 0).active = true
+        shadowView.rightAnchor.constraintEqualToAnchor(superView.rightAnchor, constant: 0).active = true
+        shadowView.heightAnchor.constraintEqualToConstant(deviceHeight-160*scaleNum-10).active = true
+        
+        shadowViewBot.translatesAutoresizingMaskIntoConstraints = false
+        shadowViewBot.leftAnchor.constraintEqualToAnchor(superView.leftAnchor, constant: 0).active = true
+        shadowViewBot.rightAnchor.constraintEqualToAnchor(superView.rightAnchor, constant: 0).active = true
+        shadowViewBot.bottomAnchor.constraintEqualToAnchor(superView.bottomAnchor, constant: 0).active = true
+        shadowViewBot.heightAnchor.constraintEqualToConstant(160*scaleNum+10).active = true
+        
+        UIView.animateWithDuration(0.2, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.shadowView.alpha = 0.6;
+            self.shadowViewBot.alpha = 0.6;
+            }, completion: nil)
+//
+//        UIView.animateWithDuration(0.3, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+//            self.mShareSheet.center.y -= 160*scaleNum
+//            }, completion: nil)
+    
+    }
+    
+    func initShadowView() {
+        shadowView.backgroundColor = UIColor.blackColor()
+        shadowViewBot.backgroundColor = UIColor.blackColor()
+        shadowView.alpha = 0
+        shadowViewBot.alpha = 0
+        
+        //tap gesture
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:Selector("shadowViewTapped:"))
+        shadowView.userInteractionEnabled = true
+        shadowView.addGestureRecognizer(tapGestureRecognizer)
+        
+        //swipe  gesture
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("shadowViewSwiped:"))
+        shadowView.addGestureRecognizer(swipeGestureRecognizer)
+    }
     
     func shareToSocial(shareDic: [String: AnyObject], controller: UIViewController) {
         let mController = controller
