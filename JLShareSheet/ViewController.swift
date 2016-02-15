@@ -14,8 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        func shareTapped(sender: UIButton) {
-        }
+        mShareButton.addTarget(self, action: "shareTapped", forControlEvents: .TouchUpInside)
 //        let view = JLShareSheet(frame: CGRect(x: 16, y: 100, width: 100, height: 100))
 //        self.view.addSubview(view)
         
@@ -23,7 +22,7 @@ class ViewController: UIViewController {
     }
     
     func shareTapped() {
-        
+        print("yes")
     }
 
     override func didReceiveMemoryWarning() {
