@@ -90,6 +90,14 @@ class ShareActions: NSObject {
         shadowView.addGestureRecognizer(swipeGestureRecognizer)
     }
     
+    func showShareSheet() {
+        
+    }
+    
+    func hideShareSheet() {
+        
+    }
+    
     func shareToSocial(shareDic: [String: AnyObject], controller: UIViewController) {
         let mController = controller
 //        switch (shareDic["name"] as! Int){
